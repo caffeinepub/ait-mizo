@@ -1,0 +1,140 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T15:06:38.448Z",
+  "summary": "Diff implements core routing with Internet Identity login protection, a first-login username onboarding flow with uniqueness enforced in the backend, and an Admin UI for user listing/role/status actions. However, the main archive features (Memory uploads/folders/search, Question Papers sub-sections, storage usage, chunked uploads, indexing, backup/export/import) are not implemented and the Memory/Question Papers pages explicitly indicate functionality is “Coming Soon”. Diff also introduces an unrequested approval/token-based access-control initialization system and adds files under paths that were declared immutable in the BuildRequest constraints.",
+  "missing_requirements": [
+    {
+      "id": "REQ-5",
+      "requirement": "Implement the Memory Section content model and UI: uploading (drag/drop, bulk), preview, progress, upload date, sorting, search, download, and copyable internal share link for each item.",
+      "reason": "Memory page is a placeholder and explicitly states backend storage and related functionality are not implemented; no upload/search/download/link UI is present.",
+      "evidence": [
+        "frontend/src/pages/memory/MemoryPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Implement folder management and categorization for Memory items (create/rename/delete folders, move items, labels for filtering).",
+      "reason": "Memory page shows disabled “Coming Soon” actions and states folder management is not yet available; no implemented UI/workflows shown.",
+      "evidence": [
+        "frontend/src/pages/memory/MemoryPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Implement the Question Paper Section with two functional sub-sections (Old Question Paper Images, External Links & Sources), each with foldering/search/categorization.",
+      "reason": "Only a landing page with disabled buttons and a notice that functionality is being implemented; no functional sub-section pages/routes shown.",
+      "evidence": [
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "For Old Question Paper Images: support image uploads (bulk/drag-drop/progress), upload date display, subject/year folders, rename/delete folders, search & filter by subject/year.",
+      "reason": "Question Papers UI indicates these features are not implemented and provides no upload/folder/search/filter UI.",
+      "evidence": [
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "For External Links & Sources: add links (URL/title/description), organize into folders, categorize by subject/exam type, search/filter, open-link action.",
+      "reason": "Question Papers UI indicates these features are not implemented and provides no link creation/management UI.",
+      "evidence": [
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Add storage usage indicators (total and optionally per-section) that update after uploads/deletes.",
+      "reason": "No storage usage UI or related queries/methods are shown; Memory/Question Papers features are not implemented.",
+      "evidence": [
+        "frontend/src/pages/memory/MemoryPage.tsx",
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Implement large-upload handling with chunked/resumable uploads and retry UX, with backend chunk assembly/finalization.",
+      "reason": "No chunked upload APIs or UI are shown; Memory/Question Paper uploads are explicitly not implemented.",
+      "evidence": [
+        "frontend/src/pages/memory/MemoryPage.tsx",
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "Provide fast retrieval with backend indexing and paginated listing + server-side filtering/search for archive content.",
+      "reason": "Diff shows only user profile/admin-related methods; no archive listing/search APIs or indexing for Memory/Question Papers are evidenced.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/pages/memory/MemoryPage.tsx",
+        "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "requirement": "Add admin-only backup & recovery workflow (export metadata and restore/import pathway) with UI feedback.",
+      "reason": "Admin panel shown focuses on user management; no export/import UI or referenced backend methods are evidenced.",
+      "evidence": [
+        "frontend/src/pages/admin/AdminPanelPage.tsx",
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Introduced an approval workflow (requestApproval/isCallerApproved/setApproval) that is not part of the requested requirements.",
+      "reason": "BuildRequest does not describe any user approval/whitelisting process beyond admin/user and active/deactivated status.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Added a secret URL-parameter-based admin token mechanism (caffeineAdminToken) used to initialize access control.",
+      "reason": "BuildRequest specifies only Internet Identity authentication and does not request any secret-token bootstrap mechanism.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/utils/urlParams.ts"
+      ]
+    },
+    {
+      "description": "Added/implemented files under paths declared immutable by constraints (useInternetIdentity, useActor, main.tsx).",
+      "reason": "BuildRequest explicitly states: “Do not edit any files under frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts(.tsx), frontend/src/hooks/useActor.ts, frontend/src/main.tsx”. The diff adds files at those exact paths.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/main.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/service-worker.js",
+    "frontend/src/App.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LoginPage.tsx",
+    "frontend/src/pages/OnboardingUsernamePage.tsx",
+    "frontend/src/pages/admin/AdminPanelPage.tsx",
+    "frontend/src/pages/memory/MemoryPage.tsx",
+    "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

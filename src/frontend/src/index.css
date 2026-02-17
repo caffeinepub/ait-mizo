@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        
+        /* Cream/white base with deep blue and muted purple accents */
+        --background: 0.98 0.01 60;
+        --foreground: 0.25 0.02 260;
+        
+        --card: 1 0 0;
+        --card-foreground: 0.25 0.02 260;
+        
+        --popover: 1 0 0;
+        --popover-foreground: 0.25 0.02 260;
+        
+        /* Deep blue primary */
+        --primary: 0.35 0.12 260;
+        --primary-foreground: 0.98 0.01 60;
+        
+        /* Muted purple secondary */
+        --secondary: 0.75 0.08 280;
+        --secondary-foreground: 0.25 0.02 260;
+        
+        --muted: 0.95 0.01 60;
+        --muted-foreground: 0.55 0.02 260;
+        
+        /* Muted purple accent */
+        --accent: 0.92 0.05 280;
+        --accent-foreground: 0.25 0.02 260;
+        
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        
+        --border: 0.88 0.02 260;
+        --input: 0.88 0.02 260;
+        --ring: 0.35 0.12 260;
+        
+        --chart-1: 0.35 0.12 260;
+        --chart-2: 0.65 0.15 280;
+        --chart-3: 0.55 0.18 240;
+        --chart-4: 0.45 0.10 270;
+        --chart-5: 0.70 0.12 250;
+    }
+
+    .dark {
+        --background: 0.15 0.02 260;
+        --foreground: 0.95 0.01 60;
+        
+        --card: 0.20 0.02 260;
+        --card-foreground: 0.95 0.01 60;
+        
+        --popover: 0.18 0.02 260;
+        --popover-foreground: 0.95 0.01 60;
+        
+        /* Lighter blue for dark mode */
+        --primary: 0.65 0.15 260;
+        --primary-foreground: 0.15 0.02 260;
+        
+        /* Lighter purple for dark mode */
+        --secondary: 0.35 0.08 280;
+        --secondary-foreground: 0.95 0.01 60;
+        
+        --muted: 0.25 0.02 260;
+        --muted-foreground: 0.65 0.02 260;
+        
+        --accent: 0.30 0.08 280;
+        --accent-foreground: 0.95 0.01 60;
+        
+        --destructive: 0.60 0.20 25;
+        --destructive-foreground: 0.15 0.02 260;
+        
+        --border: 0.30 0.02 260;
+        --input: 0.30 0.02 260;
+        --ring: 0.65 0.15 260;
+        
+        --chart-1: 0.65 0.15 260;
+        --chart-2: 0.55 0.12 280;
+        --chart-3: 0.60 0.18 240;
+        --chart-4: 0.50 0.10 270;
+        --chart-5: 0.70 0.12 250;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+    
+    /* Smooth transitions for interactive elements */
+    button, a, [role="button"] {
+        @apply transition-all duration-200;
+    }
+    
+    /* Subtle hover effects */
+    .hover-lift {
+        @apply transition-transform duration-200 hover:-translate-y-0.5;
+    }
+}
+

@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication guards, protected routes, and PWA service worker registration. Implements routing for login, onboarding, dashboard, memory, question papers, and admin sections with proper authentication and profile checks.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profile management, admin functions (list users, assign roles, deactivate/reactivate), and approval system. Handles cache invalidation and error states.",
+  "frontend/src/pages/LoginPage.tsx": "Login page with Internet Identity authentication, displaying the AIT MIZO logo and providing a clean sign-in interface with loading states.",
+  "frontend/src/pages/OnboardingUsernamePage.tsx": "Username claim page shown on first login, validates username uniqueness and format, saves user profile to backend with error handling for duplicate usernames.",
+  "frontend/src/pages/DashboardPage.tsx": "Main dashboard landing page with two primary section cards (Memory and Question Papers), providing navigation to each section with descriptive content and hover effects.",
+  "frontend/src/pages/memory/MemoryPage.tsx": "Memory section page with placeholder UI showing upload, folder management, and search features with alerts indicating backend functionality is pending implementation.",
+  "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx": "Question Papers landing page with two sub-section cards (Old Question Paper Images and External Links & Sources) with alerts indicating backend functionality is pending.",
+  "frontend/src/pages/admin/AdminPanelPage.tsx": "Admin panel with user management table showing all users, their status, and actions for role assignment, deactivation, and reactivation with confirmation dialogs.",
+  "frontend/src/components/layout/AppLayout.tsx": "Main authenticated layout component with responsive header, navigation menu, user dropdown, mobile sheet menu, and footer with caffeine.ai attribution.",
+  "frontend/src/index.css": "Global styles with OKLCH color system implementing cream/white background with deep blue and muted purple accents for both light and dark modes, plus smooth transition utilities.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended theme for AIT MIZO design system including custom colors, shadows, and animations matching the professional formal + Gen Z modern aesthetic.",
+  "frontend/index.html": "HTML entry point with PWA meta tags, favicon links, and manifest reference for installable web app experience.",
+  "frontend/public/manifest.webmanifest": "PWA manifest defining AIT MIZO as an installable standalone app with icons, theme colors, and metadata for mobile home screen installation.",
+  "frontend/public/service-worker.js": "Basic service worker for PWA functionality providing offline-capable shell caching for static assets and fallback behavior."
+}

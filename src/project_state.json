@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build “AIT MIZO”: a web + mobile cloud-based shared media archive for memories and academic question papers with centralized access (all registered users can view all content), strong organization/search, and modern professional UI.",
+  "architectural_notes": [
+    "Centralized shared archive model: all registered users have read access to all content; no private visibility controls",
+    "Two primary content domains: Memories (media/files) and Question Papers (images + external links) with foldering/categorization",
+    "Use scalable object storage + CDN for delivery; support large uploads and bulk uploads",
+    "Provide indexed search and filtering (including subject/year) across relevant content types",
+    "Implement backup & recovery strategy for stored content and metadata"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimal modern wordmark logo reading “AIT MIZO” with academic + archive vibe, cream background, deep blue/muted purple accents (ait-mizo-logo.dim_1200x400.png)\n- App icon symbol (abstract archive/media + academic motif), flat vector style, deep blue/muted purple on cream (ait-mizo-icon.dim_512x512.png)\n- Favicon version of the app icon, simplified for small sizes (ait-mizo-favicon.dim_64x64.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-authentication-using-internet-identity-and-require-login-to-access-the-app-s-dashboard-and-all-archive-features",
+      "title": "Implement authentication using Internet Identity and require login to access the app’s dashboard and all archive features.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-unique-username-system-layered-on-top-of-internet-identity-after-first-login-require-the-user-to-claim-a-globally-unique-username-store-and-display-the-username-as-the-primary-identity-in-the-ui",
+      "title": "Add a unique-username system layered on top of Internet Identity: after first login, require the user to claim a globally unique username; store and display the username as the primary identity in the UI.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-admin-panel-that-allows-designated-admin-users-to-manage-users-list-users-view-details-grant-revoke-admin-role-and-deactivate-reactivate-accounts",
+      "title": "Create an Admin panel that allows designated admin users to manage users (list users, view details, grant/revoke admin role, and deactivate/reactivate accounts).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-post-login-dashboard-layout-with-two-primary-sections-a-memory-section-and-b-question-paper-section-with-navigation-optimized-for-both-desktop-and-mobile",
+      "title": "Build the post-login Dashboard layout with two primary sections: (A) Memory Section and (B) Question Paper Section, with navigation optimized for both desktop and mobile.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-memory-section-content-model-and-ui-support-uploading-photos-videos-and-documents-bulk-uploads-drag-and-drop-uploads-preview-before-upload-upload-progress-display-automatic-upload-date-sorting-newest-oldest-search-by-filename-metadata-download-and-copyable-internal-share-link-for-each-item",
+      "title": "Implement the Memory Section content model and UI: support uploading photos, videos, and documents; bulk uploads; drag-and-drop uploads; preview before upload; upload progress display; automatic upload date; sorting (newest/oldest); search by filename/metadata; download; and copyable internal share link for each item.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-folder-management-and-categorization-for-memory-items-create-folders-rename-folders-delete-folders-with-clear-behavior-for-contained-items-move-items-between-folders-and-assign-categories-labels-that-can-be-used-for-filtering",
+      "title": "Implement folder management and categorization for Memory items: create folders, rename folders, delete folders (with clear behavior for contained items), move items between folders, and assign categories/labels that can be used for filtering.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-question-paper-section-with-two-sub-sections-1-old-question-paper-images-and-2-external-links-sources-each-with-its-own-foldering-search-and-categorization-controls",
+      "title": "Implement the Question Paper Section with two sub-sections: (1) Old Question Paper Images and (2) External Links & Sources, each with its own foldering, search, and categorization controls.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enforce-the-centralized-shared-archive-rule-all-registered-active-users-can-view-and-access-all-uploaded-content-across-both-sections-no-private-content-controls-are-exposed",
+      "title": "Enforce the centralized shared archive rule: all registered (active) users can view and access all uploaded content across both sections; no private content controls are exposed.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-storage-usage-indicator-s-show-total-archive-storage-used-and-optionally-per-section-usage-update-after-uploads-deletes-and-present-in-a-clear-human-readable-format",
+      "title": "Add storage usage indicator(s): show total archive storage used and optionally per-section usage; update after uploads/deletes and present in a clear, human-readable format.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-backup-recovery-workflow-within-platform-constraints-provide-an-admin-only-export-of-archive-metadata-and-link-data-and-a-documented-restore-import-pathway-suitable-for-controlled-recovery",
+      "title": "Add a backup & recovery workflow within platform constraints: provide an admin-only export of archive metadata (and link data) and a documented restore/import pathway suitable for controlled recovery.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-cohesive-ui-ux-design-system-matching-the-requested-theme-professional-formal-gen-z-modern-clean-minimal-layout-soft-neutral-cream-white-background-deep-blue-or-muted-purple-accents-smooth-animations-card-based-grid-layout-and-fully-responsive-behavior-to-function-well-on-web-and-mobile-sized-screens",
+      "title": "Implement a cohesive UI/UX design system matching the requested theme: professional formal + Gen Z modern, clean minimal layout, soft neutral (cream/white) background, deep blue or muted purple accents, smooth animations, card-based grid layout, and fully responsive behavior to function well on web and mobile-sized screens.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-pwa-support-so-the-web-app-can-be-installed-on-mobile-devices-home-screen-install-and-behaves-like-a-mobile-app-where-supported",
+      "title": "Add PWA support so the web app can be installed on mobile devices (home-screen install) and behaves like a mobile app where supported.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-required-static-brand-assets-logo-and-app-icons-and-render-them-in-the-ui-app-header-login-screen-and-pwa-manifest-favicon",
+      "title": "Generate required static brand assets (logo and app icons) and render them in the UI (app header/login screen) and PWA manifest/favicon.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create web + mobile app “AIT MIZO” with login-required dashboard",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Authentication: unique username login, secure auth, post-login dashboard access",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Admin panel to manage users",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Memory section: upload photos/videos/docs (incl. bulk), search, sort by date, show upload date",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Folder management & categorization: create/rename/delete folders, move files between folders",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Question Paper section: image uploads with subject/year folders + search/filter + upload dates",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "External links & sources library: add links with title/description, folders, categorization, redirect",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Shared archive rules: all registered users can access all uploaded content; no private accounts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Smart upload/download UX: drag-and-drop, upload progress bar, preview before upload, download option, internal shareable link, storage usage indicator",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Infrastructure: scalable cloud storage, CDN delivery, large upload handling, indexed search, backup & recovery",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "UI/UX theme: clean minimal responsive design (cream/white background, deep blue/muted purple accents, smooth animations, card-based grid)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "For Old Question Paper Images: support image uploads (including bulk), drag-and-drop, progress, upload date display, folders structured by subject/year, rename/delete folders, and search & filter by subject and year.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "For External Links & Sources: allow adding links with title and description; organize links into folders; rename/delete folders; categorize links by subject/exam type; and provide a redirect/open-link action.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Implement large-upload handling suitable for the Internet Computer environment, including chunked upload support and resilience to transient failures (retry UX where reasonable).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Provide fast retrieval behavior within platform constraints: optimize listing, search, and item retrieval APIs; implement backend indexing for search over filenames/metadata/tags (Memory) and subject/year/exam-type (Question Papers).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "AIT MIZO",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

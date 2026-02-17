@@ -1,0 +1,358 @@
+{
+  "kind": "build_request",
+  "title": "AIT MIZO: Shared media archive with authentication, admin, folders, uploads, search, and link library",
+  "projectName": "AIT MIZO",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement authentication using Internet Identity and require login to access the app’s dashboard and all archive features.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Login using **unique username** (primary identity)\n* Admin panel to manage users\n* Dashboard access after login",
+          "All registered users can view and access all uploaded content."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users are redirected to a login screen.",
+        "Users can sign in/out using Internet Identity.",
+        "All main routes (Dashboard, Memory, Question Papers, Admin) are protected and inaccessible without authentication."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a unique-username system layered on top of Internet Identity: after first login, require the user to claim a globally unique username; store and display the username as the primary identity in the UI.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Login using **unique username** (primary identity)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On first login, the user must choose a username before accessing the dashboard.",
+        "Usernames are unique across all accounts; attempts to claim an existing username fail with a clear error message.",
+        "After claiming, the username is shown in the app header/profile area and used wherever a user label is displayed."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create an Admin panel that allows designated admin users to manage users (list users, view details, grant/revoke admin role, and deactivate/reactivate accounts).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Admin panel to manage users"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only admin users can access the Admin panel route/UI.",
+        "Admin can list all registered users with username, principal, role (admin/non-admin), and status (active/deactivated).",
+        "Admin can change a user’s role and status, and changes take effect immediately for authorization and UI access."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the post-login Dashboard layout with two primary sections: (A) Memory Section and (B) Question Paper Section, with navigation optimized for both desktop and mobile.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "### 3. Dashboard Layout (After Login)\n\nCreate two main sections:\n\n## A. MEMORY SECTION",
+          "## B. QUESTION PAPER SECTION"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After login and username claim, the user lands on a dashboard that clearly presents Memory and Question Paper sections.",
+        "Navigation works on small screens (mobile) and large screens (desktop).",
+        "Each section has an entry point and dedicated pages for its tools (upload, folders, search/filter)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement the Memory Section content model and UI: support uploading photos, videos, and documents; bulk uploads; drag-and-drop uploads; preview before upload; upload progress display; automatic upload date; sorting (newest/oldest); search by filename/metadata; download; and copyable internal share link for each item.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Upload photos (all sizes)\n* Upload videos (all sizes)\n* Upload text files (PDF, DOC, TXT, etc.)\n* Bulk upload option",
+          "* Drag-and-drop upload\n* Progress bar during upload\n* Preview before upload\n* Download option\n* Copy shareable internal link",
+          "* Automatic upload date display\n* Sort by date (newest/oldest)\n* Search bar"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can upload supported file types into the Memory section using drag-and-drop and file picker.",
+        "Bulk upload supports selecting multiple files and shows per-file progress and overall status.",
+        "Each uploaded item shows upload date/time and supports sorting newest/oldest.",
+        "Search returns matching items by filename and stored metadata.",
+        "Users can preview common types (images and videos inline; documents at least show filename/type and allow download).",
+        "Each item can be downloaded from the UI.",
+        "Each item has a “Copy link” action that copies an internal URL that opens the item detail view when visited by a logged-in user."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement folder management and categorization for Memory items: create folders, rename folders, delete folders (with clear behavior for contained items), move items between folders, and assign categories/labels that can be used for filtering.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Folder Management:\n\n* Create new folders\n* Rename folders\n* Delete folders\n* Move files between folders\n* Categorization system"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can create, rename, and delete Memory folders from the UI.",
+        "Users can move one or multiple items to a selected folder.",
+        "Deleting a folder follows a defined UX (e.g., prevent delete if not empty or move items to a default folder) and is consistently enforced.",
+        "Items can be assigned one or more categories/labels and filtered by them in the Memory section."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement the Question Paper Section with two sub-sections: (1) Old Question Paper Images and (2) External Links & Sources, each with its own foldering, search, and categorization controls.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Divide into two sub-sections:\n\n### 1. Old Question Paper Images",
+          "### 2. External Links & Sources"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Question Paper section landing page provides clear navigation to “Old Question Paper Images” and “External Links & Sources”.",
+        "Each sub-section is functional and separated in UI and data model (no mixing item types)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "For Old Question Paper Images: support image uploads (including bulk), drag-and-drop, progress, upload date display, folders structured by subject/year, rename/delete folders, and search & filter by subject and year.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "* Upload images of question papers\n* Bulk upload option\n* Create folders by subject/year\n* Rename folder\n* Delete folder\n* Date of upload display\n* Search & filter by subject/year"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can upload multiple question paper images in bulk with progress indicators.",
+        "Each image displays its upload date/time.",
+        "Users can create folders and associate them with subject and year metadata (or equivalent structure) and rename/delete those folders.",
+        "Search and filters allow narrowing results by subject and year (and combinations)."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "For External Links & Sources: allow adding links with title and description; organize links into folders; rename/delete folders; categorize links by subject/exam type; and provide a redirect/open-link action.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "* Add website links (redirect feature)\n* Title + description field\n* Create folders\n* Rename/delete folders\n* Categorize by subject/exam type"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can create a link entry with URL, title, and description.",
+        "Links can be organized into folders that can be created/renamed/deleted.",
+        "Links support categorization fields for subject and exam type and can be filtered/searched accordingly.",
+        "Each link has an “Open” action that redirects/opens the external URL in a safe way (new tab on web)."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Enforce the centralized shared archive rule: all registered (active) users can view and access all uploaded content across both sections; no private content controls are exposed.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "All registered users can view and access all uploaded content.",
+          "No private accounts\n* Centralized shared archive system"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Any logged-in active user can browse, search, view, and download any uploaded file/link across the platform.",
+        "No UI or backend permissions exist for per-user private folders/items.",
+        "Deactivated users cannot access any content until reactivated."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Add storage usage indicator(s): show total archive storage used and optionally per-section usage; update after uploads/deletes and present in a clear, human-readable format.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "* Storage usage indicator"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UI displays total storage used with appropriate units (KB/MB/GB).",
+        "Usage updates after successful uploads and deletions without requiring a full page reload."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Implement large-upload handling suitable for the Internet Computer environment, including chunked upload support and resilience to transient failures (retry UX where reasonable).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "File size handling for large uploads"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend can upload large files using chunked/resumable-style requests to the backend actor.",
+        "If an upload fails mid-way, the UI reports the failure and allows the user to retry.",
+        "Backend stores uploads in a way that supports chunk assembly and finalization with metadata."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Provide fast retrieval behavior within platform constraints: optimize listing, search, and item retrieval APIs; implement backend indexing for search over filenames/metadata/tags (Memory) and subject/year/exam-type (Question Papers).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Database indexing for search"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes query methods that support paginated listing and server-side filtering/search.",
+        "Search results are returned within reasonable time for typical archive sizes (avoid scanning everything on the frontend)."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add a backup & recovery workflow within platform constraints: provide an admin-only export of archive metadata (and link data) and a documented restore/import pathway suitable for controlled recovery.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Backup & recovery system"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can export metadata (users, folders, items metadata, link entries) in a structured format (e.g., JSON) from the UI.",
+        "There is an admin-only restore/import mechanism or a clearly defined restore procedure surfaced in the Admin panel UI.",
+        "Export/import actions are protected and provide success/failure feedback."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Implement a cohesive UI/UX design system matching the requested theme: professional formal + Gen Z modern, clean minimal layout, soft neutral (cream/white) background, deep blue or muted purple accents, smooth animations, card-based grid layout, and fully responsive behavior to function well on web and mobile-sized screens.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Theme:\n\n* Professionally formal + Gen Z modern\n* Clean minimal layout\n* Soft neutral background (cream/white)\n* Accent color: deep blue or muted purple\n* Smooth animations\n* Card-based grid layout\n* Responsive design (web + mobile)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All primary screens (Login/Onboarding, Dashboard, Memory, Question Papers, Admin) follow the same consistent typography, spacing, and color tokens.",
+        "Layout adapts cleanly to mobile widths (single-column where appropriate) and desktop widths (multi-column grids).",
+        "Cards are used for content items and folders; interactions include subtle hover/press/transition animations without hurting performance."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Add PWA support so the web app can be installed on mobile devices (home-screen install) and behaves like a mobile app where supported.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a fully functional **website + mobile app** named **“AIT MIZO”**."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App provides a valid web manifest with name “AIT MIZO” and icons, allowing installation on supported browsers.",
+        "Installed experience opens as a standalone app window and retains routing/navigation correctly."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Generate required static brand assets (logo and app icons) and render them in the UI (app header/login screen) and PWA manifest/favicon.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "named **“AIT MIZO”**."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated logo and icon assets are committed under frontend/public/assets/generated and referenced by the UI.",
+        "Favicon/app icons appear in the browser tab and PWA install prompt where supported.",
+        "Branding is consistent with the specified cream/white + deep blue/muted purple theme."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must be implemented as a single Motoko actor (no multiple backend services).",
+    "Only Internet Identity is supported for authentication; implement username as an application-level unique handle mapped to the authenticated principal (not as a standalone credential).",
+    "Do not edit any files under frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui (compose these components instead).",
+    "Do not use external databases or third-party storage/CDN services; implement storage and indexing within Internet Computer canister constraints."
+  ],
+  "nonGoals": [
+    "Do not build social features (no feed, likes, comments, follows, DMs).",
+    "Do not implement private accounts, per-user privacy controls, or access control lists beyond admin/user and active/deactivated status.",
+    "Do not integrate third-party auth providers (Google/Facebook/GitHub/Auth0) or web3 wallets.",
+    "Do not implement real-time chat or WebSocket-based features."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal modern wordmark logo reading “AIT MIZO” with academic + archive vibe, cream background, deep blue/muted purple accents (ait-mizo-logo.dim_1200x400.png)",
+      "App icon symbol (abstract archive/media + academic motif), flat vector style, deep blue/muted purple on cream (ait-mizo-icon.dim_512x512.png)",
+      "Favicon version of the app icon, simplified for small sizes (ait-mizo-favicon.dim_64x64.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Build a shared, login-protected media archive on the Internet Computer for memories and academic question papers with strong organization and search."
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Use English for all user-facing UI text.",
+      "Prefer a clean minimal UI with cream/white background and deep blue or muted purple accents, optimized for responsive web and mobile-like (PWA) use."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

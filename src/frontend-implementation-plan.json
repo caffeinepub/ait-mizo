@@ -1,0 +1,562 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "AIT MIZO frontend: authenticated shared media archive with admin, folders, uploads, search, links, PWA, and branding",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Internet Identity login gate + protected routes for all archive features",
+      "acceptanceCriteria": [
+        "Unauthenticated users are redirected to a login screen.",
+        "Users can sign in/out using Internet Identity.",
+        "All main routes (Dashboard, Memory, Question Papers, Admin) are protected and inaccessible without authentication."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell with routing and auth gating using the existing useInternetIdentity hook (do not modify it). Add protected-route wrappers for Dashboard, Memory, Question Papers, and Admin, redirecting unauthenticated users to Login. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.tsx",
+          "operation": "create",
+          "description": "Create a login screen with an Internet Identity sign-in/out button driven by useInternetIdentity, and a clear post-login call-to-action. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProtectedRoute.tsx",
+          "operation": "create",
+          "description": "Create a reusable route guard that redirects to Login when identity is missing and shows a loading state while auth/actor queries are resolving (useActor + React Query). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AuthHeader.tsx",
+          "operation": "create",
+          "description": "Create a header auth widget (sign in/out, current user label) that integrates with useInternetIdentity and clears React Query cache on logout as recommended by the authorization component guidance. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Username-claim onboarding layered on Internet Identity; show username in UI",
+      "acceptanceCriteria": [
+        "On first login, the user must choose a username before accessing the dashboard.",
+        "Usernames are unique across all accounts; attempts to claim an existing username fail with a clear error message.",
+        "After claiming, the username is shown in the app header/profile area and used wherever a user label is displayed."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCurrentUserProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to load current profile via actor.getCallerUserProfile() and save via actor.saveCallerUserProfile(), following the authorization component guidance to avoid onboarding modal flash. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/OnboardingUsernamePage.tsx",
+          "operation": "create",
+          "description": "Create an onboarding page that requires the user to claim a globally unique username (primary identity). Handle and display uniqueness errors returned by the backend. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/RequireUsername.tsx",
+          "operation": "create",
+          "description": "Create a guard component used by protected routes that blocks access until getCallerUserProfile() returns a non-null profile, otherwise redirects to the username onboarding flow. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create the main app header that displays the claimed username prominently (instead of principal) and provides navigation across sections. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire username onboarding into routing: after login, route to OnboardingUsernamePage if user profile is missing; otherwise allow access to Dashboard and archive routes. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Admin panel UI for managing users (roles + active/deactivated) with admin-only access",
+      "acceptanceCriteria": [
+        "Only admin users can access the Admin panel route/UI.",
+        "Admin can list all registered users with username, principal, role (admin/non-admin), and status (active/deactivated).",
+        "Admin can change a user’s role and status, and changes take effect immediately for authorization and UI access."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useAdmin.ts",
+          "operation": "create",
+          "description": "Add React Query hooks/mutations for admin capabilities using backend-interface methods: isCallerAdmin, listAllUsers, assignCallerUserRole, deactivateUser, reactivateUser. Ensure cache invalidation updates the UI immediately after changes. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AdminRoute.tsx",
+          "operation": "create",
+          "description": "Create an admin-only guard that checks actor.isCallerAdmin() and shows an Access Denied screen for non-admins as recommended by the authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminPanelPage.tsx",
+          "operation": "create",
+          "description": "Create the Admin panel UI: list users with username/principal/role/status; actions for grant/revoke admin and deactivate/reactivate; include confirmation dialogs and immediate UI refresh. Use shadcn-ui components for table/cards/dialogs. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admin/UserTable.tsx",
+          "operation": "create",
+          "description": "Create a reusable admin table component for user management actions (role/status). Use shadcn-ui Table/DropdownMenu/Dialog for a clean UX. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the /admin route and wrap it with ProtectedRoute + RequireUsername + AdminRoute so it is inaccessible without authentication and admin role. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Post-login dashboard layout with Memory + Question Paper sections and responsive navigation",
+      "acceptanceCriteria": [
+        "After login and username claim, the user lands on a dashboard that clearly presents Memory and Question Paper sections.",
+        "Navigation works on small screens (mobile) and large screens (desktop).",
+        "Each section has an entry point and dedicated pages for its tools (upload, folders, search/filter)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the post-login Dashboard with two primary cards/sections: Memory and Question Papers; include responsive layout (single-column on mobile, two-column on desktop) and links into dedicated pages. Use shadcn-ui card/button components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared authenticated layout (header + responsive nav) used across dashboard and archive pages; optimize for mobile via collapsible navigation (e.g., sheet/drawer). Use shadcn-ui NavigationMenu/Sheet components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire DashboardPage as the authenticated landing route after login/username claim and connect navigation to Memory and Question Paper section routes. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Memory UI: uploads (bulk, drag-drop, preview, progress), listing, sorting, search, download, and internal share links",
+      "acceptanceCriteria": [
+        "Users can upload supported file types into the Memory section using drag-and-drop and file picker.",
+        "Bulk upload supports selecting multiple files and shows per-file progress and overall status.",
+        "Each uploaded item shows upload date/time and supports sorting newest/oldest.",
+        "Search returns matching items by filename and stored metadata.",
+        "Users can preview common types (images and videos inline; documents at least show filename/type and allow download).",
+        "Each item can be downloaded from the UI.",
+        "Each item has a “Copy link” action that copies an internal URL that opens the item detail view when visited by a logged-in user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/memory/MemoryPage.tsx",
+          "operation": "create",
+          "description": "Create the Memory section page with search, sort (newest/oldest), folder filter (wired in REQ-6), and an upload entry point. Render items as a responsive card grid with preview, download, and copy-link actions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/memory/MemoryItemDetailPage.tsx",
+          "operation": "create",
+          "description": "Create an item detail view route used by internal share links, showing preview (image/video) and metadata (filename/type/upload date) plus download. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/uploads/DragAndDropUpload.tsx",
+          "operation": "create",
+          "description": "Create a drag-and-drop + file picker upload component with preview-before-upload and a list of selected files; integrate per-file progress and retry UX. For blob handling and direct URLs, use the blob-storage component’s ExternalBlob capabilities. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memory/MemoryItemCard.tsx",
+          "operation": "create",
+          "description": "Create a card component for Memory items with inline preview (image/video via direct URL), file-type badges, upload date display, download action, and Copy link button. Use shadcn-ui Card/Badge/Button/DropdownMenu. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMemory.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for Memory listing/search/sort, item retrieval for detail view, and upload completion invalidation. Keep calls actor-based and cache-friendly; avoid frontend scanning when backend provides filters. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/shareLinks.ts",
+          "operation": "create",
+          "description": "Implement helper utilities to generate internal share URLs for Memory item detail routes and copy-to-clipboard behavior with user feedback. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register and wire Memory routes: /memory (listing) and /memory/item/:id (detail), all behind ProtectedRoute + RequireUsername. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Memory folders + categorization UI: create/rename/delete folders, move items, labels for filtering",
+      "acceptanceCriteria": [
+        "Users can create, rename, and delete Memory folders from the UI.",
+        "Users can move one or multiple items to a selected folder.",
+        "Deleting a folder follows a defined UX (e.g., prevent delete if not empty or move items to a default folder) and is consistently enforced.",
+        "Items can be assigned one or more categories/labels and filtered by them in the Memory section."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/folders/FolderSidebar.tsx",
+          "operation": "create",
+          "description": "Create a reusable folder sidebar (list + create/rename/delete) used by Memory and Question Paper sub-sections. Implement a clear folder-delete UX (e.g., block delete when non-empty or require moving items) consistent with backend rules. Use shadcn-ui Dialog/AlertDialog/Inputs. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memory/MoveItemsDialog.tsx",
+          "operation": "create",
+          "description": "Create a dialog to move one/multiple Memory items to a chosen folder, integrated into item selection UI. Use shadcn-ui Dialog/Select/Checkbox. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/tags/TagFilter.tsx",
+          "operation": "create",
+          "description": "Create a reusable category/label assignment and filter control (multi-select style) for Memory items. Use shadcn-ui Badge/Popover/Command if available. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useFolders.ts",
+          "operation": "create",
+          "description": "Add React Query hooks/mutations for folder CRUD and move operations, plus query invalidation to keep Memory lists and folder lists in sync. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/memory/MemoryPage.tsx",
+          "operation": "modify",
+          "description": "Integrate FolderSidebar, move-items UX, and category filtering into the Memory page; ensure filters and search/sort work together. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Question Paper section landing with two sub-sections (Images + External Links) and separate controls",
+      "acceptanceCriteria": [
+        "Question Paper section landing page provides clear navigation to “Old Question Paper Images” and “External Links & Sources”.",
+        "Each sub-section is functional and separated in UI and data model (no mixing item types)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+          "operation": "create",
+          "description": "Create a Question Papers landing page with two clear navigation cards: Old Question Paper Images and External Links & Sources, matching the dashboard design language. Use shadcn-ui Cards/Buttons. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire routes for Question Papers landing and its two sub-sections under /question-papers, protected by ProtectedRoute + RequireUsername. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Old Question Paper Images UI: image uploads (bulk/drag-drop/progress), subject/year folders, search and filters",
+      "acceptanceCriteria": [
+        "Users can upload multiple question paper images in bulk with progress indicators.",
+        "Each image displays its upload date/time.",
+        "Users can create folders and associate them with subject and year metadata (or equivalent structure) and rename/delete those folders.",
+        "Search and filters allow narrowing results by subject and year (and combinations)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/question-papers/QuestionPaperImagesPage.tsx",
+          "operation": "create",
+          "description": "Create the Old Question Paper Images page with image-only uploads (bulk + drag/drop), upload progress, foldering structured by subject/year, and search/filter controls. Use blob-storage ExternalBlob direct URLs for preview where applicable. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/question-papers/SubjectYearFilters.tsx",
+          "operation": "create",
+          "description": "Create subject/year filter controls (including combined filtering) and integrate them with listing queries. Use shadcn-ui Select/Combobox components for a compact UX. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/question-papers/QuestionPaperImageCard.tsx",
+          "operation": "create",
+          "description": "Create an image card for question paper items showing thumbnail/preview, upload date, subject/year, and actions (download/copy link if supported). Use shadcn-ui Card/Badge/DropdownMenu. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQuestionPaperImages.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for listing/search/filtering by subject/year, folder-scoped listing, and image uploads with post-upload invalidation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/folders/FolderSidebar.tsx",
+          "operation": "modify",
+          "description": "Extend the reusable folder UI to support subject/year metadata entry (when used in the Question Paper Images context) while keeping Memory folder behavior unchanged. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "External Links & Sources UI: add links (URL/title/description), folders, subject/exam-type categorization, search/filter, open action",
+      "acceptanceCriteria": [
+        "Users can create a link entry with URL, title, and description.",
+        "Links can be organized into folders that can be created/renamed/deleted.",
+        "Links support categorization fields for subject and exam type and can be filtered/searched accordingly.",
+        "Each link has an “Open” action that redirects/opens the external URL in a safe way (new tab on web)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/question-papers/ExternalLinksPage.tsx",
+          "operation": "create",
+          "description": "Create the External Links & Sources page with folder sidebar, add-link flow (URL/title/description), categorization fields (subject/exam type), and search/filter UI. Provide safe open-in-new-tab behavior. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/links/AddLinkDialog.tsx",
+          "operation": "create",
+          "description": "Create an add/edit link dialog with validation (URL required) and fields for title/description/subject/exam type and folder selection. Use shadcn-ui Dialog/Form controls. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/links/LinkCard.tsx",
+          "operation": "create",
+          "description": "Create a link card with title/description, badges for subject/exam type, folder context, and actions: Open (new tab) and copy. Use shadcn-ui Card/Badge/Button/DropdownMenu. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useExternalLinks.ts",
+          "operation": "create",
+          "description": "Add React Query hooks/mutations for link CRUD, folder association, search/filter (subject/exam type), and cache invalidation for immediate UI updates. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/safeExternalNavigation.ts",
+          "operation": "create",
+          "description": "Implement a small utility to open external URLs safely (e.g., using window.open with appropriate flags) and normalize URLs where needed. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Shared archive rule enforcement in UI: no private controls; deactivated users blocked",
+      "acceptanceCriteria": [
+        "Any logged-in active user can browse, search, view, and download any uploaded file/link across the platform.",
+        "No UI or backend permissions exist for per-user private folders/items.",
+        "Deactivated users cannot access any content until reactivated."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/RequireActiveUser.tsx",
+          "operation": "create",
+          "description": "Create a guard that checks the current user profile isActive flag (via getCallerUserProfile) and blocks archive access with a clear deactivated message when false. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ArchiveAccessGate.tsx",
+          "operation": "create",
+          "description": "Create a single wrapper used by archive routes that composes: ProtectedRoute + RequireUsername + approval gate (REQ-1/REQ-2/REQ-user-approval) + RequireActiveUser, ensuring all logged-in active users have equal browse access (no per-user privacy UI). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/memory/MemoryPage.tsx",
+          "operation": "modify",
+          "description": "Ensure listing/search UI never shows any private/per-user controls or ownership filters; present content as shared. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/question-papers/QuestionPaperImagesPage.tsx",
+          "operation": "modify",
+          "description": "Ensure listing/search UI never shows any private/per-user controls or ownership filters; present content as shared. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/question-papers/ExternalLinksPage.tsx",
+          "operation": "modify",
+          "description": "Ensure link browsing never shows private/per-user controls; all active users can view all links. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap Memory and Question Paper routes with ArchiveAccessGate so deactivated users cannot access content until reactivated. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Storage usage indicators that update after uploads/deletes",
+      "acceptanceCriteria": [
+        "UI displays total storage used with appropriate units (KB/MB/GB).",
+        "Usage updates after successful uploads and deletions without requiring a full page reload."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useStorageUsage.ts",
+          "operation": "create",
+          "description": "Add React Query hook(s) to retrieve total (and optionally per-section) storage usage from backend capabilities, and expose refetch/invalidate helpers triggered after upload/delete flows. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/storage/StorageUsageIndicator.tsx",
+          "operation": "create",
+          "description": "Create a human-readable storage usage indicator component (KB/MB/GB) for header/dashboard placement; update via query invalidation after uploads/deletes. Use shadcn-ui Progress/Tooltip where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Display total storage used prominently on the dashboard (and optionally per-section summary) using StorageUsageIndicator. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/uploads/DragAndDropUpload.tsx",
+          "operation": "modify",
+          "description": "After successful uploads, invalidate/refetch storage usage queries so the indicator updates without full reload. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Large-upload handling in the UI with chunking and retry/resilience",
+      "acceptanceCriteria": [
+        "Frontend can upload large files using chunked/resumable-style requests to the backend actor.",
+        "If an upload fails mid-way, the UI reports the failure and allows the user to retry.",
+        "Backend stores uploads in a way that supports chunk assembly and finalization with metadata."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/chunkedUpload.ts",
+          "operation": "create",
+          "description": "Implement a chunked upload utility that splits files into chunks, calls backend upload capabilities in sequence, tracks progress, and supports retrying failed chunks; surface errors in a user-friendly way. For blob transport and progress reporting, integrate the blob-storage component’s ExternalBlob where applicable. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/uploads/UploadQueue.tsx",
+          "operation": "create",
+          "description": "Create an upload queue UI that shows per-file status (queued/uploading/failed/completed), per-file progress, overall progress, and retry controls. Use shadcn-ui Progress/Button/Alert components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/uploads/DragAndDropUpload.tsx",
+          "operation": "modify",
+          "description": "Wire DragAndDropUpload to the chunkedUpload utility and UploadQueue, ensuring bulk uploads show per-file progress and allow retry on failure. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMemory.ts",
+          "operation": "modify",
+          "description": "Integrate post-finalization invalidation so Memory lists refresh after successful chunked uploads; ensure failures do not corrupt the UI state and retry is possible. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQuestionPaperImages.ts",
+          "operation": "modify",
+          "description": "Integrate chunked upload + invalidation for bulk question paper image uploads with resilient retry behavior. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Admin-only backup/export and restore/import UI workflow with feedback",
+      "acceptanceCriteria": [
+        "Admin can export metadata (users, folders, items metadata, link entries) in a structured format (e.g., JSON) from the UI.",
+        "There is an admin-only restore/import mechanism or a clearly defined restore procedure surfaced in the Admin panel UI.",
+        "Export/import actions are protected and provide success/failure feedback."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/admin/BackupRestorePanel.tsx",
+          "operation": "create",
+          "description": "Create an admin-only Backup & Recovery panel UI with: Export metadata (download JSON), Import/Restore (file picker upload) or a clearly defined restore procedure section, and success/failure toasts. Use shadcn-ui Card/Button/AlertDialog/Toast. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminPanelPage.tsx",
+          "operation": "modify",
+          "description": "Add the BackupRestorePanel section to the Admin panel and ensure it is only accessible/visible to admins. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/fileDownload.ts",
+          "operation": "create",
+          "description": "Implement a helper to download exported JSON content as a file with timestamped filename, plus basic size display. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Cohesive responsive design system: cream/white base with deep blue/muted purple accents, minimal card grid, smooth animations",
+      "acceptanceCriteria": [
+        "All primary screens (Login/Onboarding, Dashboard, Memory, Question Papers, Admin) follow the same consistent typography, spacing, and color tokens.",
+        "Layout adapts cleanly to mobile widths (single-column where appropriate) and desktop widths (multi-column grids).",
+        "Cards are used for content items and folders; interactions include subtle hover/press/transition animations without hurting performance."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and design tokens (CSS variables used by Tailwind/shadcn) to match cream/white background and deep blue/muted purple accents; include subtle transition defaults and consistent typography. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions as needed to support the requested design language (e.g., radius/shadow/animation presets) while keeping shadcn token-based color system. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Apply consistent spacing, card-based grids, and responsive navigation patterns across authenticated pages; ensure mobile-first behavior and subtle hover/press transitions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.tsx",
+          "operation": "modify",
+          "description": "Align Login screen with the design system (brand logo, clean layout, responsive spacing, subtle animations) using shadcn-ui primitives. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "PWA support: manifest + installable experience + standalone routing",
+      "acceptanceCriteria": [
+        "App provides a valid web manifest with name “AIT MIZO” and icons, allowing installation on supported browsers.",
+        "Installed experience opens as a standalone app window and retains routing/navigation correctly."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/manifest.webmanifest",
+          "operation": "create",
+          "description": "Add a valid PWA manifest for “AIT MIZO” with start_url, display=standalone, theme/background colors matching the cream + accent palette, and icon entries referencing generated assets under frontend/public/assets/generated. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/public/service-worker.js",
+          "operation": "create",
+          "description": "Add a basic service worker for offline-capable shell caching suitable for a SPA/PWA (cache static assets and fallback to network where appropriate). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the service worker from within the app (cannot modify main.tsx) and ensure client-side routing works in standalone mode. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Link the web manifest and include required meta tags for installability (theme-color, icons) while keeping the document title as AIT MIZO. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Brand assets (logo/icons) integrated into UI header/login and manifest/favicon",
+      "acceptanceCriteria": [
+        "Generated logo and icon assets are committed under frontend/public/assets/generated and referenced by the UI.",
+        "Favicon/app icons appear in the browser tab and PWA install prompt where supported.",
+        "Branding is consistent with the specified cream/white + deep blue/muted purple theme."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png",
+          "operation": "create",
+          "description": "Add the generated wordmark logo asset at frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png and ensure it is used by Login and header branding. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated app icon asset at frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png and reference it from the PWA manifest and any in-app icon usage. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png",
+          "operation": "create",
+          "description": "Add the generated favicon asset at frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png and reference it from frontend/index.html for browser tab display. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/brand/BrandMark.tsx",
+          "operation": "create",
+          "description": "Create a small brand component that renders the logo/icon (from the generated assets) consistently across Login and the authenticated header. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.tsx",
+          "operation": "modify",
+          "description": "Render the generated logo from frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png on the login screen for consistent branding. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Render brand mark/icon in the authenticated header using assets under frontend/public/assets/generated, alongside the username display. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/public/manifest.webmanifest",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png in the manifest icon list to support PWA install prompt icons. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png for favicon so it appears in browser tabs. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

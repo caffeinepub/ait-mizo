@@ -1,0 +1,387 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T15:06:38.453Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 17,
+    "implemented": 13,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Implement authentication using Internet Identity and require login to access the app’s dashboard and all archive features.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/pages/LoginPage.tsx",
+          "frontend/src/components/auth/ProtectedRoute.tsx",
+          "frontend/src/components/auth/AuthHeader.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/pages/LoginPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-10",
+        "summary": "Enforce the centralized shared archive rule: all registered (active) users can view and access all uploaded content across both sections; no private content controls are exposed.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/auth/RequireActiveUser.tsx",
+          "frontend/src/components/auth/ArchiveAccessGate.tsx",
+          "frontend/src/pages/memory/MemoryPage.tsx",
+          "frontend/src/pages/question-papers/QuestionPaperImagesPage.tsx",
+          "frontend/src/pages/question-papers/ExternalLinksPage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/memory/MemoryPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-11",
+        "summary": "Add storage usage indicator(s): show total archive storage used and optionally per-section usage; update after uploads/deletes and present in a clear, human-readable format.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useStorageUsage.ts",
+          "frontend/src/components/storage/StorageUsageIndicator.tsx",
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/components/uploads/DragAndDropUpload.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/DashboardPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Implement large-upload handling suitable for the Internet Computer environment, including chunked upload support and resilience to transient failures (retry UX where reasonable).",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/utils/chunkedUpload.ts",
+          "frontend/src/components/uploads/UploadQueue.tsx",
+          "frontend/src/components/uploads/DragAndDropUpload.tsx",
+          "frontend/src/hooks/useMemory.ts",
+          "frontend/src/hooks/useQuestionPaperImages.ts"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Provide fast retrieval behavior within platform constraints: optimize listing, search, and item retrieval APIs; implement backend indexing for search over filenames/metadata/tags (Memory) and subject/year/exam-type (Question Papers).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-14",
+        "summary": "Add a backup & recovery workflow within platform constraints: provide an admin-only export of archive metadata (and link data) and a documented restore/import pathway suitable for controlled recovery.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/admin/BackupRestorePanel.tsx",
+          "frontend/src/pages/admin/AdminPanelPage.tsx",
+          "frontend/src/utils/fileDownload.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/admin/AdminPanelPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-15",
+        "summary": "Implement a cohesive UI/UX design system matching the requested theme: professional formal + Gen Z modern, clean minimal layout, soft neutral (cream/white) background, deep blue or muted purple accents, smooth animations, card-based grid layout, and fully responsive behavior to function well on web and mobile-sized screens.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/pages/LoginPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/pages/LoginPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "Add PWA support so the web app can be installed on mobile devices (home-screen install) and behaves like a mobile app where supported.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/public/service-worker.js",
+          "frontend/src/App.tsx",
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/public/service-worker.js",
+          "frontend/src/App.tsx",
+          "frontend/index.html"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "Generate required static brand assets (logo and app icons) and render them in the UI (app header/login screen) and PWA manifest/favicon.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png",
+          "frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png",
+          "frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png",
+          "frontend/src/components/brand/BrandMark.tsx",
+          "frontend/src/pages/LoginPage.tsx",
+          "frontend/src/components/layout/AppHeader.tsx",
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png",
+          "frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png",
+          "frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png",
+          "frontend/src/pages/LoginPage.tsx",
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Add a unique-username system layered on top of Internet Identity: after first login, require the user to claim a globally unique username; store and display the username as the primary identity in the UI.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useCurrentUserProfile.ts",
+          "frontend/src/pages/OnboardingUsernamePage.tsx",
+          "frontend/src/components/auth/RequireUsername.tsx",
+          "frontend/src/components/layout/AppHeader.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/OnboardingUsernamePage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Create an Admin panel that allows designated admin users to manage users (list users, view details, grant/revoke admin role, and deactivate/reactivate accounts).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useAdmin.ts",
+          "frontend/src/components/auth/AdminRoute.tsx",
+          "frontend/src/pages/admin/AdminPanelPage.tsx",
+          "frontend/src/components/admin/UserTable.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/admin/AdminPanelPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Build the post-login Dashboard layout with two primary sections: (A) Memory Section and (B) Question Paper Section, with navigation optimized for both desktop and mobile.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Implement the Memory Section content model and UI: support uploading photos, videos, and documents; bulk uploads; drag-and-drop uploads; preview before upload; upload progress display; automatic upload date; sorting (newest/oldest); search by filename/metadata; download; and copyable internal share link for each item.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/memory/MemoryPage.tsx",
+          "frontend/src/pages/memory/MemoryItemDetailPage.tsx",
+          "frontend/src/components/uploads/DragAndDropUpload.tsx",
+          "frontend/src/components/memory/MemoryItemCard.tsx",
+          "frontend/src/hooks/useMemory.ts",
+          "frontend/src/utils/shareLinks.ts",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/memory/MemoryPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Implement folder management and categorization for Memory items: create folders, rename folders, delete folders (with clear behavior for contained items), move items between folders, and assign categories/labels that can be used for filtering.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/folders/FolderSidebar.tsx",
+          "frontend/src/components/memory/MoveItemsDialog.tsx",
+          "frontend/src/components/tags/TagFilter.tsx",
+          "frontend/src/hooks/useFolders.ts",
+          "frontend/src/pages/memory/MemoryPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/memory/MemoryPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Implement the Question Paper Section with two sub-sections: (1) Old Question Paper Images and (2) External Links & Sources, each with its own foldering, search, and categorization controls.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "For Old Question Paper Images: support image uploads (including bulk), drag-and-drop, progress, upload date display, folders structured by subject/year, rename/delete folders, and search & filter by subject and year.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/pages/question-papers/QuestionPaperImagesPage.tsx",
+          "frontend/src/components/question-papers/SubjectYearFilters.tsx",
+          "frontend/src/components/question-papers/QuestionPaperImageCard.tsx",
+          "frontend/src/hooks/useQuestionPaperImages.ts",
+          "frontend/src/components/folders/FolderSidebar.tsx"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-9",
+        "summary": "For External Links & Sources: allow adding links with title and description; organize links into folders; rename/delete folders; categorize links by subject/exam type; and provide a redirect/open-link action.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/pages/question-papers/ExternalLinksPage.tsx",
+          "frontend/src/components/links/AddLinkDialog.tsx",
+          "frontend/src/components/links/LinkCard.tsx",
+          "frontend/src/hooks/useExternalLinks.ts",
+          "frontend/src/utils/safeExternalNavigation.ts"
+        ],
+        "matchedFiles": []
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/authorization/MixinAuthorization.mo",
+    "backend/authorization/access-control.mo",
+    "backend/blob-storage/Mixin.mo",
+    "backend/blob-storage/Storage.mo",
+    "backend/main.mo",
+    "backend/user-approval/approval.mo",
+    "build-request.json",
+    "build-template/Dockerfile",
+    "build-template/LICENSE",
+    "build-template/README.md",
+    "build-template/deploy.sh",
+    "build-template/icp.yaml",
+    "build-template/package.json",
+    "build-template/pnpm-lock.yaml",
+    "build-template/pnpm-workspace.yaml",
+    "build-template/scripts/prune-unused-images.js",
+    "build-template/scripts/resize-images.js",
+    "build-template/src/backend/canister.yaml",
+    "build-template/src/backend/system-idl/aaaaa-aa.did",
+    "build-template/src/frontend/canister.yaml",
+    "build-template/src/frontend/components.json",
+    "build-template/src/frontend/env.json",
+    "build-template/src/frontend/eslint-rules/no-bigint-in-query-keys.js",
+    "build-template/src/frontend/eslint-rules/require-internet-identity-provider.js",
+    "build-template/src/frontend/eslint.config.js",
+    "build-template/src/frontend/package.json",
+    "build-template/src/frontend/postcss.config.js",
+    "build-template/src/frontend/src/components/ui/accordion.tsx",
+    "build-template/src/frontend/src/components/ui/alert-dialog.tsx",
+    "build-template/src/frontend/src/components/ui/alert.tsx",
+    "build-template/src/frontend/src/components/ui/aspect-ratio.tsx",
+    "build-template/src/frontend/src/components/ui/avatar.tsx",
+    "build-template/src/frontend/src/components/ui/badge.tsx",
+    "build-template/src/frontend/src/components/ui/breadcrumb.tsx",
+    "build-template/src/frontend/src/components/ui/button.tsx",
+    "build-template/src/frontend/src/components/ui/calendar.tsx",
+    "build-template/src/frontend/src/components/ui/card.tsx",
+    "build-template/src/frontend/src/components/ui/carousel.tsx",
+    "build-template/src/frontend/src/components/ui/chart.tsx",
+    "build-template/src/frontend/src/components/ui/checkbox.tsx",
+    "build-template/src/frontend/src/components/ui/collapsible.tsx",
+    "build-template/src/frontend/src/components/ui/command.tsx",
+    "build-template/src/frontend/src/components/ui/context-menu.tsx",
+    "build-template/src/frontend/src/components/ui/dialog.tsx",
+    "build-template/src/frontend/src/components/ui/drawer.tsx",
+    "build-template/src/frontend/src/components/ui/dropdown-menu.tsx",
+    "build-template/src/frontend/src/components/ui/form.tsx",
+    "build-template/src/frontend/src/components/ui/hover-card.tsx",
+    "build-template/src/frontend/src/components/ui/input-otp.tsx",
+    "build-template/src/frontend/src/components/ui/input.tsx",
+    "build-template/src/frontend/src/components/ui/label.tsx",
+    "build-template/src/frontend/src/components/ui/menubar.tsx",
+    "build-template/src/frontend/src/components/ui/navigation-menu.tsx",
+    "build-template/src/frontend/src/components/ui/pagination.tsx",
+    "build-template/src/frontend/src/components/ui/popover.tsx",
+    "build-template/src/frontend/src/components/ui/progress.tsx",
+    "build-template/src/frontend/src/components/ui/radio-group.tsx",
+    "build-template/src/frontend/src/components/ui/resizable.tsx",
+    "build-template/src/frontend/src/components/ui/scroll-area.tsx",
+    "build-template/src/frontend/src/components/ui/select.tsx",
+    "build-template/src/frontend/src/components/ui/separator.tsx",
+    "build-template/src/frontend/src/components/ui/sheet.tsx",
+    "build-template/src/frontend/src/components/ui/sidebar.tsx",
+    "build-template/src/frontend/src/components/ui/skeleton.tsx",
+    "build-template/src/frontend/src/components/ui/slider.tsx",
+    "build-template/src/frontend/src/components/ui/sonner.tsx",
+    "build-template/src/frontend/src/components/ui/switch.tsx",
+    "build-template/src/frontend/src/components/ui/table.tsx",
+    "build-template/src/frontend/src/components/ui/tabs.tsx",
+    "build-template/src/frontend/src/components/ui/textarea.tsx",
+    "build-template/src/frontend/src/components/ui/toggle-group.tsx",
+    "build-template/src/frontend/src/components/ui/toggle.tsx",
+    "build-template/src/frontend/src/components/ui/tooltip.tsx",
+    "build-template/src/frontend/src/hooks/use-mobile.tsx",
+    "build-template/src/frontend/src/lib/utils.ts",
+    "build-template/src/frontend/tsconfig.json",
+    "build-template/src/frontend/vite.config.js",
+    "build-template/tsconfig.json",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/public/assets/generated/ait-mizo-favicon.dim_64x64.png",
+    "frontend/public/assets/generated/ait-mizo-icon.dim_512x512.png",
+    "frontend/public/assets/generated/ait-mizo-logo.dim_1200x400.png",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/service-worker.js",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/config.ts",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LoginPage.tsx",
+    "frontend/src/pages/OnboardingUsernamePage.tsx",
+    "frontend/src/pages/admin/AdminPanelPage.tsx",
+    "frontend/src/pages/memory/MemoryPage.tsx",
+    "frontend/src/pages/question-papers/QuestionPapersLandingPage.tsx",
+    "frontend/src/ui-summary.json",
+    "frontend/src/utils/StorageClient.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}
